@@ -3,19 +3,34 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     marginBottom: 16,
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    justifyContent: 'center',
     paddingHorizontal: 8,
   },
+
+  goalImage: {
+    width: 160,
+    height: 160,
+    margin: 12,
+    marginTop: -140,
+  },
+
   textInput: {
-    paddingHorizontal: 12,
+    width: '80%',
+    height: 48,
     borderWidth: 1,
+    borderRadius: 8,
     borderColor: '#ccc',
-    width: '74%',
+    paddingHorizontal: 18,
     marginRight: 8,
+  },
+
+  buttonGroup: {
+    marginTop: 16,
+    flexDirection: 'row',
+  },
+  button: {
+    marginHorizontal: 16,
   },
 });
