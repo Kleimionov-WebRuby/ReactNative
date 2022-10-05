@@ -1,15 +1,28 @@
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
-import { padding } from './snippets/style-snippets';
+import 'react-native-get-random-values';
+
+import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { StyleSheet, View, Text, FlatList } from 'react-native';
+
+import GoalItem from './Components/GoalItem';
+import GoalInput from './Components/GoalInput';
 
 export default function App() {
+  const [goals, setGoals] = useState([]);
+
+  const handleAddGoal = enteredGoalText => {
+    setGoals(prevState => [{ id: uuidv4(), text: enteredGoalText }, ...prevState]);
+  };
+
   return (
     <View style={styles.appContainer}>
-      <View style={styles.inputContainer}>
-        <TextInput placeholder="You Goal!" style={styles.textInput} />
-        <Button title="Add Goal" />
-      </View>
-      <View>
-        <Text>List Of Goals</Text>
+      <GoalInput placeholder="Your Goal!" buttonTitle="Add Goal" onAddGoal={handleAddGoal} />
+      <View style={styles.goalsContainer}>
+        {goals.length ? (
+          <FlatList data={goals} renderItem={GoalItem} keyExtractor={({ id }) => id} />
+        ) : (
+          <Text>List Of Goals...</Text>
+        )}
       </View>
     </View>
   );
@@ -17,18 +30,12 @@ export default function App() {
 
 const styles = StyleSheet.create({
   appContainer: {
-    ...padding(48, 16),
+    flex: 1,
+    paddingVertical: 48,
+    paddingHorizontal: 16,
   },
-  inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-  },
-  textInput: {
-    ...padding(0, 12),
-    borderWidth: 1,
-    borderColor: '#cccccc',
-    width: '74%',
-    marginRight: 8,
+  goalsContainer: {
+    flex: 6,
+    paddingHorizontal: 12,
   },
 });
