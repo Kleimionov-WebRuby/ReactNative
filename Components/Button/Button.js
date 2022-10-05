@@ -1,19 +1,25 @@
 import React from 'react';
-import { Text, Pressable } from 'react-native';
+import { Text, Pressable, View } from 'react-native';
 
 import { styles } from './styles';
 
 const Button = props => {
-  const { onPress, title = 'Save', backgroundColor = '#000000' } = props;
+  const { onPress, color = '#000000', children } = props;
 
   return (
-    <Pressable
-      android_ripple={{ color: 'rgba(239, 242, 243, 0.1)' }}
-      style={{ backgroundColor, ...styles.button }}
-      onPress={onPress}
-    >
-      <Text style={styles.text}>{title}</Text>
-    </Pressable>
+    <View style={styles.buttonOutherContainer}>
+      <Pressable
+        android_ripple={{ color: 'rgba(239, 242, 243, 0.1)' }}
+        style={({ pressed }) => [
+          { backgroundColor: color },
+          styles.buttonInnerContainer,
+          pressed && styles.buttonInnerContainer,
+        ]}
+        onPress={onPress}
+      >
+        <Text style={styles.buttonText}>{children}</Text>
+      </Pressable>
+    </View>
   );
 };
 
