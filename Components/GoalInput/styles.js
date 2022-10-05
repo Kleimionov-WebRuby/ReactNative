@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-    paddingHorizontal: 12,
+    paddingHorizontal: 8,
   },
   textInput: {
     paddingHorizontal: 12,

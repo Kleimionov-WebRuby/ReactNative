@@ -14,14 +14,22 @@ export default function App() {
     setGoals(prevState => [{ id: uuidv4(), text: enteredGoalText }, ...prevState]);
   };
 
+  const handleDeleteGoal = id => {
+    setGoals(prevState => prevState.filter(goal => goal.id !== id));
+  };
+
   return (
     <View style={styles.appContainer}>
       <GoalInput placeholder="Your Goal!" buttonTitle="Add Goal" onAddGoal={handleAddGoal} />
       <View style={styles.goalsContainer}>
         {goals.length ? (
-          <FlatList data={goals} renderItem={GoalItem} keyExtractor={({ id }) => id} />
+          <FlatList
+            data={goals}
+            renderItem={data => <GoalItem item={data.item} onDeleteGoal={handleDeleteGoal} />}
+            keyExtractor={({ id }) => id}
+          />
         ) : (
-          <Text>List Of Goals...</Text>
+          <Text>Waiting for your goals</Text>
         )}
       </View>
     </View>
@@ -36,6 +44,5 @@ const styles = StyleSheet.create({
   },
   goalsContainer: {
     flex: 6,
-    paddingHorizontal: 12,
   },
 });
