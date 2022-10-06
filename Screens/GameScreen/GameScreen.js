@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { StyleSheet, View, Text, Alert, FlatList } from 'react-native';
+import { StyleSheet, View, Text, Alert, FlatList, useWindowDimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
 import Button from '../../Components/Button/Button';
@@ -25,6 +25,8 @@ function GameScreen(props) {
   );
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [guessRounds, setGuessRounds] = useState([initialGuess]);
+
+  const { height } = useWindowDimensions();
 
   useEffect(() => {
     minBoundary = 1;
@@ -57,8 +59,10 @@ function GameScreen(props) {
     setGuessRounds(prev => [newRndNumber, ...prev]);
   };
 
+  const marginTop = height < 400 ? 30 : 100;
+
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { marginTop }]}>
       <Card>
         <Title>- Opponent's Guess -</Title>
         <NumberContainer>{currentGuess}</NumberContainer>
@@ -99,7 +103,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     marginHorizontal: 24,
-    marginTop: 100,
   },
   subtitle: {
     fontSize: 18,

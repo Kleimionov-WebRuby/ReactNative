@@ -1,15 +1,32 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import Button from '../../Components/Button/Button';
 
 import Title from '../../Components/Title/Title';
 import Colors from '../../constants/colors';
 
 const GameOverScreen = props => {
+  const { width, height } = useWindowDimensions();
+
+  let imageSize = 300;
+
+  if (width < 380) {
+    imageSize = 150;
+  }
+  if (height < 400) {
+    imageSize = 100;
+  }
+
+  const imageStyles = {
+    width: imageSize,
+    height: imageSize,
+    borderRadius: imageSize / 2,
+  };
+
   return (
     <View style={[styles.screen, styles.centerContainer]}>
       <Title>- GAME OVER -</Title>
       <View style={styles.centerContainer}>
-        <View style={styles.imageContainer}>
+        <View style={[styles.imageContainer, imageStyles]}>
           <Image source={require('../../assets/images/success.png')} style={styles.image} />
         </View>
       </View>
@@ -39,13 +56,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imageContainer: {
-    width: 300,
-    height: 300,
-    borderRadius: 200,
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 5,
+    borderWidth: 4,
     borderColor: Colors.accent500,
     margin: 24,
   },
