@@ -8,6 +8,7 @@ import Button from '../Components/Button';
 import { ExpensesContext } from '../store/expenses-context';
 import { DUMMY_EXPENSES } from '../data/dummy-data';
 import Colors from '../constants/colors';
+import ExpenseForm from '../Components/ManageExpense/ExpenseForm';
 
 const ManageExpense = () => {
   const route = useRoute();
@@ -17,6 +18,8 @@ const ManageExpense = () => {
 
   const expenseId = route.params?.expenseId;
   const isEditing = !!expenseId;
+
+  const selectedExpense = expensesCtx.expenses.find(expense => expense.id === expenseId);
 
   useLayoutEffect(() => {
     const selectedExpense = DUMMY_EXPENSES.find(expense => expense.id === expenseId);
@@ -32,19 +35,11 @@ const ManageExpense = () => {
     navigation.goBack();
   };
 
-  const confirmHandler = () => {
+  const confirmHandler = expenseData => {
     if (isEditing) {
-      expensesCtx.updateExpense(expenseId, {
-        description: 'Test!!!!',
-        amount: 29.99,
-        date: new Date(),
-      });
+      expensesCtx.updateExpense(expenseId, expenseData);
     } else {
-      expensesCtx.addExpense({
-        description: 'Test',
-        amount: 19.99,
-        date: new Date(),
-      });
+      expensesCtx.addExpense(expenseData);
     }
 
     navigation.goBack();
@@ -53,14 +48,12 @@ const ManageExpense = () => {
   return (
     <LayoutContainer>
       <View style={styles.container}>
-        <View style={styles.buttons}>
-          <Button style={styles.button} mode="flat" onPress={cancelHandler}>
-            Cancel
-          </Button>
-          <Button style={styles.button} onPress={confirmHandler}>
-            {isEditing ? 'Update' : 'Add'}
-          </Button>
-        </View>
+        <ExpenseForm
+          defaultValues={selectedExpense}
+          onCancel={cancelHandler}
+          onSubmit={confirmHandler}
+        />
+
         {isEditing && (
           <View style={styles.deleteContainer}>
             <IconButton
@@ -81,18 +74,8 @@ export default ManageExpense;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    backgroundColor: Colors.primary800,
   },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    minWidth: 120,
-    marginHorizontal: 8,
-  },
+
   deleteContainer: {
     marginTop: 16,
     paddingTop: 8,
