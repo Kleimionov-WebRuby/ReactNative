@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, Pressable, View } from 'react-native';
 
 import Colors from '../../constants/colors';

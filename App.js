@@ -1,48 +1,60 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Feather } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { AntDesign } from '@expo/vector-icons';
 
-import CategoriesScreen from './Screens/CategoriesScreen';
-import MealsOverviewScreen from './Screens/MealsOverviewScreen';
-import MealDetailScreen from './Screens/MealDetailScreen';
+import AllExpenses from './Screens/AllExpenses';
+import ManageExpense from './Screens/ManageExpense';
+import RecentExpenses from './Screens/RecentExpenses';
+import IconButton from './Components/IconButton/IconButton';
 import { RootPath } from './constants/rootPath';
 import Colors from './constants/colors';
-import FavoriteMealsScreen from './Screens/FavoriteMealsScreen';
 
 const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
+const BottomTabs = createBottomTabNavigator();
 
-function DrawerNavigator() {
+function ExpensesOverview() {
+  const navigation = useNavigation();
+
   return (
-    <Drawer.Navigator
-      useLegacyImplementation // IMPORTANT !!! - Don't work withoud this option
+    <BottomTabs.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: Colors.black },
+        headerStyle: { backgroundColor: Colors.primary500 },
         headerTintColor: Colors.white,
-        drawerActiveTintColor: Colors.black,
-        drawerActiveBackgroundColor: Colors.primary,
+        tabBarStyle: { backgroundColor: Colors.primary500 },
+        tabBarActiveTintColor: Colors.accent500,
+        headerRight: ({ tintColor }) => (
+          <IconButton
+            icon="add"
+            size={24}
+            color={tintColor}
+            onPress={() => {
+              navigation.navigate(RootPath.ManageExpense);
+            }}
+          />
+        ),
       }}
     >
-      <Drawer.Screen
-        name={RootPath.MealsCategories}
-        component={CategoriesScreen}
+      <BottomTabs.Screen
+        name={RootPath.RecentExpenses}
+        component={RecentExpenses}
         options={{
-          title: 'Categories',
-          drawerIcon: ({ color, size }) => <Feather name="list" color={color} size={size} />,
+          title: 'Recent Expenses',
+          tabBarLabel: 'Recent',
+          tabBarIcon: ({ color, size }) => <AntDesign name="hourglass" color={color} size={size} />,
         }}
       />
-      <Drawer.Screen
-        name={RootPath.FavoriteMeals}
-        component={FavoriteMealsScreen}
+      <BottomTabs.Screen
+        name={RootPath.AllExpenses}
+        component={AllExpenses}
         options={{
-          title: 'Favorite',
-          drawerIcon: ({ color, size }) => <Feather name="star" color={color} size={size} />,
+          title: 'All Expenses',
+          tabBarLabel: 'All',
+          tabBarIcon: ({ color, size }) => <AntDesign name="calendar" color={color} size={size} />,
         }}
       />
-    </Drawer.Navigator>
+    </BottomTabs.Navigator>
   );
 }
 
@@ -50,37 +62,21 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <View style={styles.rootScreen}>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerStyle: { backgroundColor: Colors.black },
-              headerTintColor: Colors.white,
-            }}
-          >
-            <Stack.Screen
-              name={RootPath.Drawer}
-              component={DrawerNavigator}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name={RootPath.MealsOverview}
-              component={MealsOverviewScreen}
-              options={{ title: 'Meals' }}
-            />
-            <Stack.Screen name={RootPath.MealDetail} component={MealDetailScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </View>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: { backgroundColor: Colors.primary500 },
+            headerTintColor: Colors.white,
+          }}
+        >
+          <Stack.Screen
+            name={RootPath.ExpensesOverview}
+            component={ExpensesOverview}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name={RootPath.ManageExpense} component={ManageExpense} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  rootScreen: {
-    flex: 1,
-  },
-  container: {},
-});
