@@ -1,11 +1,13 @@
+import { useContext } from 'react';
 import ExpensesOutput from '../Components/ExpensesOutput/ExpensesOutput';
 import LayoutContainer from '../Components/LayoutContainer';
 
-import { DUMMY_EXPENSES } from '../data/dummy-data';
+import { ExpensesContext } from '../store/expenses-context';
 import { getDateMinusDays } from '../utils/date';
 
 const RecentExpenses = () => {
-  const recentExpenses = DUMMY_EXPENSES.filter(expense => {
+  const expensesCtx = useContext(ExpensesContext);
+  const recentExpenses = expensesCtx.expenses.filter(expense => {
     const today = new Date();
     const date7DaysAgo = getDateMinusDays(today, 7);
 

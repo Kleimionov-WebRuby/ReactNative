@@ -8,6 +8,7 @@ import AllExpenses from './Screens/AllExpenses';
 import ManageExpense from './Screens/ManageExpense';
 import RecentExpenses from './Screens/RecentExpenses';
 import IconButton from './Components/IconButton/IconButton';
+import ExpensesContextProvider from './store/expenses-context';
 import { RootPath } from './constants/rootPath';
 import Colors from './constants/colors';
 
@@ -62,21 +63,23 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: Colors.primary500 },
-            headerTintColor: Colors.white,
-          }}
-        >
-          <Stack.Screen
-            name={RootPath.ExpensesOverview}
-            component={ExpensesOverview}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name={RootPath.ManageExpense} component={ManageExpense} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ExpensesContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: Colors.primary500 },
+              headerTintColor: Colors.white,
+            }}
+          >
+            <Stack.Screen
+              name={RootPath.ExpensesOverview}
+              component={ExpensesOverview}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name={RootPath.ManageExpense} component={ManageExpense} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ExpensesContextProvider>
     </>
   );
 }

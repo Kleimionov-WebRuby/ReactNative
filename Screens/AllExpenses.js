@@ -1,10 +1,12 @@
+import { useContext } from 'react';
 import ExpensesOutput from '../Components/ExpensesOutput/ExpensesOutput';
 import LayoutContainer from '../Components/LayoutContainer';
 
-import { DUMMY_EXPENSES } from '../data/dummy-data';
+import { ExpensesContext } from '../store/expenses-context';
 
 const AllExpenses = () => {
-  const sortedExpenses = DUMMY_EXPENSES.sort((a, b) => b.date - a.date);
+  const expensesCtx = useContext(ExpensesContext);
+  const sortedExpenses = expensesCtx.expenses.sort((a, b) => b.date - a.date);
 
   return (
     <LayoutContainer>
