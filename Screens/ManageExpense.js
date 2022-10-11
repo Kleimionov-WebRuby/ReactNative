@@ -4,11 +4,11 @@ import { StyleSheet, View } from 'react-native';
 
 import LayoutContainer from '../Components/LayoutContainer';
 import IconButton from '../Components/IconButton';
-import Button from '../Components/Button';
 import { ExpensesContext } from '../store/expenses-context';
 import { DUMMY_EXPENSES } from '../data/dummy-data';
 import Colors from '../constants/colors';
 import ExpenseForm from '../Components/ManageExpense/ExpenseForm';
+import { storeExpene } from '../utils/http';
 
 const ManageExpense = () => {
   const route = useRoute();
@@ -35,11 +35,12 @@ const ManageExpense = () => {
     navigation.goBack();
   };
 
-  const confirmHandler = expenseData => {
+  const confirmHandler = async expenseData => {
     if (isEditing) {
       expensesCtx.updateExpense(expenseId, expenseData);
     } else {
-      expensesCtx.addExpense(expenseData);
+      const id = await storeExpene(expenseData);
+      expensesCtx.addExpense({ ...expenseData, id });
     }
 
     navigation.goBack();
