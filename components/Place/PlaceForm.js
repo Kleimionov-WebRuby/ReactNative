@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import Button from '../UI/Button';
 import ImagePicker from './ImagePicker';
@@ -9,8 +9,8 @@ import { Place } from '../../models/place';
 
 const PlaceForm = ({ onCreatePlace }) => {
   const [enteredTitle, setEnteredTitle] = useState('');
-  const [selectedImage, setSelectedImage] = useState();
-  const [pickedLocation, setPickedLocation] = useState();
+  const [selectedImage, setSelectedImage] = useState('');
+  const [pickedLocation, setPickedLocation] = useState(null);
 
   const changeTitleHandler = enteredText => {
     setEnteredTitle(enteredText);
@@ -20,6 +20,11 @@ const PlaceForm = ({ onCreatePlace }) => {
     setSelectedImage(imageUri);
   };
   function savePlaceHandler() {
+    if (!pickedLocation) {
+      Alert.alert('No location picked!', 'You have to pick a location first!');
+
+      return;
+    }
     const placeData = new Place(enteredTitle, selectedImage, pickedLocation);
     onCreatePlace(placeData);
   }
